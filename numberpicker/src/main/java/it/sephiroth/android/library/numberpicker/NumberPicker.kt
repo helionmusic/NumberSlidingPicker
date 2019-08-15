@@ -45,6 +45,7 @@ class NumberPicker @JvmOverloads constructor(
         fun onProgressChanged(numberPicker: NumberPicker, progress: Int, fromUser: Boolean)
         fun onStartTrackingTouch(numberPicker: NumberPicker)
         fun onStopTrackingTouch(numberPicker: NumberPicker)
+        fun onAppliedManualProgress(numberPicker: NumberPicker)
     }
 
     var numberPickerChangeListener: OnNumberPickerChangeListener? = null
@@ -358,6 +359,7 @@ class NumberPicker @JvmOverloads constructor(
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     editText.clearFocus()
+                    numberPickerChangeListener?.onAppliedManualProgress(this)
                     true
                 }
                 else -> false

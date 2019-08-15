@@ -24,7 +24,9 @@ inline fun NumberPicker.addProgressChangedListener(
 
         crossinline startTrackingTouch: (numberPicker: NumberPicker) -> Unit = { _ -> },
 
-        crossinline stopTrackingTouch: (numberPicker: NumberPicker) -> Unit = { _ -> }
+        crossinline stopTrackingTouch: (numberPicker: NumberPicker) -> Unit = { _ -> },
+
+        crossinline applyManualProgress: (numberPicker: NumberPicker) -> Unit = { _ -> }
 
                                                   ): NumberPicker.OnNumberPickerChangeListener {
     val listener = object : NumberPicker.OnNumberPickerChangeListener {
@@ -41,6 +43,9 @@ inline fun NumberPicker.addProgressChangedListener(
             stopTrackingTouch.invoke(numberPicker)
         }
 
+        override fun onAppliedManualProgress(numberPicker: NumberPicker) {
+            applyManualProgress.invoke(numberPicker)
+        }
     }
     numberPickerChangeListener = listener
     return listener
@@ -60,6 +65,10 @@ class _OnNumberPickerChangeListener : NumberPicker.OnNumberPickerChangeListener 
         _onStopTrackingTouch?.invoke(numberPicker)
     }
 
+    override fun onAppliedManualProgress(numberPicker: NumberPicker) {
+        _onAppliedManualProgress?.invoke(numberPicker)
+    }
+
     fun onProgressChanged(func: (NumberPicker, Int, Boolean) -> Unit) {
         _onProgressChanged = func
     }
@@ -72,9 +81,14 @@ class _OnNumberPickerChangeListener : NumberPicker.OnNumberPickerChangeListener 
         _onStopTrackingTouch = func
     }
 
+    fun onAppliedManualProgress(func: (NumberPicker) -> Unit){
+        _onAppliedManualProgress = func
+    }
+
     private var _onProgressChanged: ((NumberPicker, Int, Boolean) -> Unit)? = null
     private var _onStartTrackingTouch: ((NumberPicker) -> Unit)? = null
     private var _onStopTrackingTouch: ((NumberPicker) -> Unit)? = null
+    private var _onAppliedManualProgress: ((NumberPicker) -> Unit)? = null
 }
 
 inline fun NumberPicker.setListener(func: _OnNumberPickerChangeListener.() -> Unit) {
