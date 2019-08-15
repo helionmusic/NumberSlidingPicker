@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
             onStopTrackingTouch {
                 Timber.v("onStopTrackingTouch")
             }
+
+            onAppliedManualProgress {
+                Timber.v("onAppliedManualProgress(${it.progress})")
+            }
         }
     }
 }
